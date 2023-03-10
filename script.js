@@ -74,14 +74,14 @@ promptuser().then((answers) => {
 //Show all Dept function
 showDepartments = () => {
   console.log('Departements');
-  const sql2 = `SELECT department.id AS id, department.name as department FROM department.`;
+  const sql2 = `SELECT department.id AS id, department.name as department FROM department`;
 
 
-  connection.promise().query(sql2, (err, rows) => {
+connection.promise().query(sql2).then((err, rows) => {
     if (err) throw err;
     console.table(rows);
     promptUser();
-  });
+  }).catch(err => console.log(err));
 };
 
 //Show all Roles function
