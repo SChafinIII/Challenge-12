@@ -1,7 +1,11 @@
 // Import Libraries 
 const mysql2 = require('mysql2');
-const inquirer = require('inquirer@8.2.4');
+const inquirer = require('inquirer');
 const table = require('console.table');
+
+
+require('dotenv').config()
+
 
 // connection to sql
 const connection = mysql2.createConnection({
@@ -14,13 +18,15 @@ const connection = mysql2.createConnection({
 // Throws error if connection fails. 
 
 connection.connect(err => {
-  if (err) throw err;
+  if (err) {
+    console.log(err); 
+    throw err;
+  }
   console.log('connected as id ' + connection.threadId);
-  afterConnection();
 });
 
 const promptuser = () => {
-  inquirer.prompt([
+  return inquirer.prompt([ 
     {
       type: 'list',
       name: 'choices',
@@ -37,7 +43,7 @@ const promptuser = () => {
   ])
 }
 
-promptuser.then((answers) => {
+promptuser().then((answers) => {
   switch (answers.choices) {
     case 'View all Departments':
       showDepartments();
@@ -47,24 +53,28 @@ promptuser.then((answers) => {
       break;
     case 'View all Employees':
       showEmployees();
+      break;
     case 'Add a new Department':
       addDepartment();
+      break;
     case 'Add a new Role':
       addRole();
+      break; 
     case 'Add new Employee':
       addEmployee();
+      break; 
     case 'Update Employee Roles':
       updateRoles();
-
+      break;
     default:
       console.log('NO RESPONSE SELECTED');
   }
-});
+}).catch(err => console.log(err));
 
 //Show all Dept function
 showDepartments = () => {
   console.log('Departements');
-  const sql2 = `SELECT department.id AS id, deparment.name as department FROM deparment.`;
+  const sql2 = `SELECT department.id AS id, department.name as department FROM department.`;
 
 
   connection.promise().query(sql2, (err, rows) => {
@@ -101,7 +111,7 @@ showEmployees = () => {
                 LEFT JOIN department ON role.department_id = department.id
                 LEFT JOIN employee manager ON employee.manager_id = manager.id`;
 
-  connection.promise().query(sql, (err, rows) => {
+  connection.promise().query(sql2, (err, rows) => {
     if (err) throw err;
     console.table(rows);
     promptUser();
