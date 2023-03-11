@@ -36,8 +36,12 @@ The current application fulfills all of the above requirements. Allowing the use
 5. Answer prompts available. 
 6. `cntrl + c` to quit out of application once finished. 
 
-### Example of Usage
+## Example of Usage
 ![gif of project displaying code functionality](Challenge-12-sql.gif)
+
+### Higher Resolution Video 
+https://user-images.githubusercontent.com/118332995/224467597-88227e0d-c30d-4c77-9e6f-0045dff9dcc2.mp4
+
 
 ## Mit License
 Copyright (c) [2023] [Steven W Chafin III]
