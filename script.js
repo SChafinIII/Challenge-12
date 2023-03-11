@@ -38,7 +38,7 @@ const promptuser = () => {
         'Add a new Department',
         'Add a new Role',
         'Add a new Employee',
-        'Update Employee Role'
+        'Update Employee Roles'
       ]
     }
   ])
@@ -203,7 +203,7 @@ const addEmployee = () => {
   connection.query(rolesql, (err, rows) => {
     if (err) throw err;
     const managesql = 'SELECT id AS value, CONCAT(first_name, " ", last_name) AS name FROM employee';
-    connection.query(managesql, (err, employeerows) => {
+    connection.query(managesql, (err, employeerows) => { 
       if (err) throw err;
 
       inquirer.prompt([
@@ -262,3 +262,41 @@ const addEmployee = () => {
 }
 
 // update an Employee
+const updateRoles = () => {
+  inquirer.prompt([
+    {
+      type: 'input',
+      name: 'first_name',
+      message: 'What is the name of the employee?',
+      validate: input => {
+        if (input) {
+          return true;
+        } else {
+          console.log('Please enter a name.');
+          return false;
+        }
+      }
+    },
+    {
+      type: 'number',
+      name: 'role',
+      message: "What is new role ID of the employee?",
+      validate: input => {
+        if (input) {
+          return true;
+        } else {
+          console.log('Please enter a role ID.');
+          return false;
+        }
+      }
+    }
+  ]).then(answer => {
+    const update = 'UPDATE employee set role_id = ? WHERE first_name = ?'
+    connection.query(update, [answer.role, answer.first_name],
+      (err, rows) => {
+
+    console.table(rows);
+    showEmployees();
+  })
+});
+}
